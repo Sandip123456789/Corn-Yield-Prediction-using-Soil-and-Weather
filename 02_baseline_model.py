@@ -5,6 +5,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import GroupKFold
 from sklearn.metrics import mean_squared_error, r2_score
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 'Step 1: Prepare the Data'
 # We use the 'cleaned or preprocessed' data from the previous step
@@ -78,3 +79,29 @@ def run_experiment(name, features_to_drop):
     # Return feature importances for analysis
     return avg_r2, avg_importances, X.columns
 
+# Experiment A: FULL MODEL (With Temperature)
+r2_full, imp_full, cols_full = run_experiment("Baseline (With Temp)", [])
+
+# Experiment B: PHYSICS ONLY (No Temperature)
+# We drop all temperature columns to force the model to look at Soil/Rain
+temp_cols = ['Min_Temp', 'Max_Temp', 'Avg_Temp']
+r2_phys, imp_phys, cols_phys = run_experiment("Physics Only (Blindfold)", temp_cols)
+
+# REPORTING & VISUALIZATION
+print("\n" + "="*40)
+print(f"FINAL SCORECARD")
+print("="*40)
+print(f"1. Baseline (Geography/Temp): {r2_full:.4f}")
+print(f"2. Physics Only (Soil/Rain):  {r2_phys:.4f}")
+
+# Plot Feature Importance for the Physics Model
+# We want to know: If we take away Temp, does Soil actually matter?
+feat_df = pd.DataFrame({'Feature': cols_phys, 'Importance': imp_phys})
+feat_df = feat_df.sort_values(by='Importance', ascending=False)
+
+plt.figure(figsize=(10, 6))
+sns.barplot(data=feat_df, x='Importance', y='Feature', palette='viridis', hue='Feature', legend=True)
+plt.title(f"Physics Model Drivers (R² = {r2_phys:.2f})")
+plt.xlabel("Importance")
+plt.tight_layout()
+plt.show()
