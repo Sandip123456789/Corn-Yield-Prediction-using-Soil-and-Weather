@@ -98,3 +98,12 @@ for param, value in best_params.items():
 model_filename = "best_corn_xgboost.pkl"
 joblib.dump(best_model, model_filename)
 print(f"\n Saved best model to '{model_filename}' (using joblib)")
+
+# Feature Importance Check
+importance = pd.DataFrame({
+    'Feature': X.columns,
+    'Importance': best_model.feature_importances_
+}).sort_values(by='Importance', ascending=False)
+
+print("\n--- New Drivers of Yield (XGBoost) ---")
+print(importance.head(5))
