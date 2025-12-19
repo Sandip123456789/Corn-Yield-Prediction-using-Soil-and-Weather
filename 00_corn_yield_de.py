@@ -32,6 +32,26 @@ rename_cols = {
 
 df = df.rename(columns=rename_cols)
 
+
+# Identify the outlier rows (max temp < -50)
+print("\n Looking for outliers...")
+outliers = df[df['Max_Temp'] < -50]
+
+if len(outliers) > 0:
+    print(f" Found {len(outliers)} outlier(s).")
+    print(f" Bad Row Indices: {outliers.index.tolist()}")
+    print(f" Bad Values: {outliers['Max_Temp'].values}")
+else:
+    print(" No outliers found in raw data.")
+
+# Using explicit method to drop outliers
+# Instead of boolean logic, we drop the specific indices found above
+if len(outliers) > 0:
+    print(f" Dropping outliers: {outliers.index.tolist()}")
+    df = df.drop(outliers.index)
+    print(f" Dropped successful. Remaining rows: {len(df)}")
+
+
 initial_count = len(df)
 
 # --- STEP 2: The Surgical Cleaning ---
@@ -43,10 +63,12 @@ df['Temp_Yield_Efficiency'] = df['Total_Production'] / df['Area_Ha']
 # Filter 1: Physics - pH must be > 0 (removes -1000 error codes)
 # Filter 2: Forensics - Yield must be < 10 (removes the Crossriver copy-paste error)
 # Filter 3: Validity - Area must be > 0 (dividing by zero is impossible)
+# Filter 4: Max_Temp must be within reasonable bounds (temp below -50 is bullshit)
 clean_df = df[
     (df['pH'] > 0) & 
     (df['Temp_Yield_Efficiency'] < 10) & 
-    (df['Area_Ha'] > 0)
+    (df['Area_Ha'] > 0 &
+    (df['Max_Temp'] > -50))  # Safety double-check
 ].copy()
 
 # Creating official Target Variable on the clean data
