@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import joblib
-import warnings
 
 # Page Configuration
 st.set_page_config(
@@ -114,5 +113,54 @@ with col2:
         </div>
         """, unsafe_allow_html=True)
 
-# This ignores all warnings (including the thread context ones)
-warnings.filterwarnings("ignore")
+# Insights Section
+st.markdown("---")
+st.subheader("📊 Insights & Recommendations")
+
+c1, c2, c3 = st.columns(3)
+
+# Insight 1: Heat Cliff
+current_max_temp = input_df['Max_Temp'][0]
+with c1:
+    if current_max_temp > 30.5:
+        st.error("**Heat Stress Alert**")
+        st.caption("Max Temp is above 30.5C. Model detects the 'Heat Cliff' effect, which can severely reduce yield. Consider irrigation or shading techniques.")
+    else:
+        st.success("**Optimal Temp**")
+        st.caption("Max Temp is within optimal range for corn growth.")
+
+# Insight 2: Water Buffer
+current_rain = input_df['Avg_Precipitation'][0]
+with c2:
+    if current_rain < 100:
+        st.warning("**Water Deficit Warning**")
+        st.caption("Rainfall is low (<100mm). Even if soil is good, yield is limited by lack of water.")
+    elif current_rain > 200:
+        st.info("**Excess Water Caution**")
+        st.caption("Rain > 200mm. Adding more water yields diminishing returns (Law of Diminishing Marginal Utility).")
+    else:
+        st.success("**Adequate Rainfall**")
+        st.caption("Rainfall is within the optimal range for corn growth.")
+
+# Insight 3: Soil Texture
+with c3:
+    if input_df['Sand'][0] > 60:
+        st.error("**Sandy Soil Alert**")
+        st.caption("High Sand content drains water too quickly, negatively impacting yield.")
+    elif input_df['Clay'][0] > 40:
+        st.info("**Heavyx Clay Soil**")
+        st.caption("High Clay holds water well, which buffers against drought.")
+    else:
+        st.success("**Balanced Soil Texture**")
+        st.caption("Soil texture is well balanced for optimal corn growth.")
+
+st.markdown("----")
+st.caption("© 2025 Corn Yield Predictor")
+
+
+import warnings
+import logging
+# This sets Streamlit's logger to only show critical errors, not warnings.
+logging.getLogger("streamlit").setLevel(logging.ERROR)
+# Suppress Warnings
+warnings.filterwarnings('ignore')
