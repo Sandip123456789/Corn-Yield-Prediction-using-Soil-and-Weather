@@ -1,4 +1,4 @@
-🌽 Physics-Aware Corn Yield Prediction System
+🌽 Corn Yield Prediction System using Soil and Weather
 
 A "Gray Box" Machine Learning system that predicts corn yield efficiency based on soil physics and weather patterns, optimized for biological plausibility over raw statistical accuracy.
 
