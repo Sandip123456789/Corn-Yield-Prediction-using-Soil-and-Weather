@@ -3,6 +3,7 @@ import numpy as np
 import xgboost as xgb
 from sklearn.model_selection import GroupKFold, RandomizedSearchCV
 from sklearn.metrics import r2_score, mean_squared_error
+from sklearn.model_selection import cross_val_score
 import joblib
 
 # Configuation
@@ -46,7 +47,7 @@ param_grid = {
 
 }
 
-# 3. Setup The Search (The "Brain")
+# 3. Setup The Search ("Brain")
 # Must manually generate the GroupKFold splits to pass to the Search
 # This ensures we respect the "Don't split Districts" rule during tuning
 
@@ -89,6 +90,24 @@ print(f"Best RMSE (Validation): {best_rmse:.4f}")
 print("Best Parameters:")
 for param, value in best_params.items():
     print(f" - {param}: {value}")
+
+print("\n" + "="*40)
+print(f"CALCULATING REAL ACCURACY...")
+print("="*40)
+
+# Using the exact same grouping strategy (GroupKFold)
+# This forces the model to predict on districts it has NEVER seen.
+cv_scores = cross_val_score(
+    best_model, 
+    X, 
+    y, 
+    groups=groups, 
+    cv=gkf, 
+    scoring='r2' # <--- We explicitly ask for R-Squared accuracy
+)
+
+print(f"Training Score (Glitch): {best_model.score(X, y):.4f} (99% - Ignore this)")
+print(f"Validation Score (Truth): {cv_scores.mean():.4f} ({(cv_scores.mean()*100):.2f}%)")
 
 # # Saving the Model
 # best_model.save_model('best_corn_xgboost.json')

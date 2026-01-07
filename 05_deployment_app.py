@@ -124,7 +124,7 @@ current_max_temp = input_df['Max_Temp'][0]
 with c1:
     if current_max_temp > 30.5:
         st.error("**Heat Stress Alert**")
-        st.caption("Max Temp is above 30.5C. Model detects the 'Heat Cliff' effect, which can severely reduce yield. Consider irrigation or shading techniques.")
+        st.caption("Max Temp is above 30.5°C. Model detects the 'Heat Cliff' effect, which can severely reduce yield. Consider irrigation or shading techniques.")
     else:
         st.success("**Optimal Temp**")
         st.caption("Max Temp is within optimal range for corn growth.")
