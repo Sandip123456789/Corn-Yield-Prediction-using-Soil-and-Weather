@@ -48,7 +48,7 @@ top_feature = 'Max_Temp'
 if top_feature in X.columns:
     #plt.figure(figsize=(8, 5))
     shap.dependence_plot(top_feature, shap_values.values, X, show=False)
-    plt.title(f"Physics Check: Impact of {top_feature} on Yield")
+    plt.title(f"Impact of {top_feature} on Yield")
     plt.grid(True, alpha=0.3)
     plt.show()
 
@@ -57,6 +57,6 @@ second_feature = 'Avg_Precipitation'
 if second_feature in X.columns:
     #plt.figure(figsize=(8, 5))
     shap.dependence_plot(second_feature, shap_values.values, X, show=False)
-    plt.title(f"Physics Check: Impact of {second_feature} on Yield")
+    plt.title(f"Impact of {second_feature} on Yield")
     plt.grid(True, alpha=0.3)
     plt.show()
