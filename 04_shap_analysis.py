@@ -6,7 +6,7 @@ import joblib
 
 # Configuration
 model_file = 'best_corn_xgboost.pkl'
-data_file = 'processed_corn_data.csv'
+data_file = 'cleaned_data/processed_corn_data.csv'
 
 print(" Starting SHAP Interpretation ...")
 

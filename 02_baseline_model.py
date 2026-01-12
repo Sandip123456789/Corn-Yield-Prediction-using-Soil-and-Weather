@@ -12,14 +12,14 @@ import seaborn as sns
 # X = Inputs (Features)
 # y = Output (Target)
 
-file_name = 'processed_corn_data.csv'
+file_name = 'cleaned_data/processed_corn_data.csv'
 n_folds = 5 # split data into 5 batches of Districts for cross-validation
 
 #1. Load Clean Data
 try:
     df = pd.read_csv(file_name)
 except FileNotFoundError:
-    print("Error: processed_corn_data not found!!")
+    print("Error: cleaned_data/processed_corn_data not found!!")
     exit()
 
 # 2. Setup Features & Groups

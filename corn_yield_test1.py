@@ -3,11 +3,11 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 """# CONFIGURATION
-INPUT_FILE = 'raw_corn_data.xlsx'
-OUTPUT_FILE = 'processed_corn_data.csv'"""
+INPUT_FILE = 'data/raw_corn_data.xlsx'
+OUTPUT_FILE = 'cleaned_data/processed_corn_data.csv'"""
 
 # ---- Step 1: Load & Clean Data -----
-file_path = 'raw_corn_data.xlsx' 
+file_path = 'data/raw_corn_data.xlsx' 
 
 #1. Reload the data
 df = pd.read_excel(file_path)
@@ -105,7 +105,7 @@ plt.show()
 
 """export_df = final_df
 
-output_filename = 'processed_corn_data.csv'
+output_filename = 'cleaned_data/processed_corn_data.csv'
 export_df.to_csv(output_filename, index=False)"""
 
 """print(f"[ETL] Success. Clean data saved to '{output_filename}'.")

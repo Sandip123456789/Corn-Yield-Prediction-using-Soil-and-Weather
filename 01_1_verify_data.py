@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-file_name = 'processed_corn_data.csv'
+file_name = 'cleaned_data/processed_corn_data.csv'
 
 print(f"[Audit] Inspecting '{file_name}'...")
 

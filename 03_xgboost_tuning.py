@@ -7,7 +7,7 @@ from sklearn.model_selection import cross_val_score
 import joblib
 
 # Configuation
-file_name = 'processed_corn_data.csv'
+file_name = 'cleaned_data/processed_corn_data.csv'
 n_folds = 5     # 5-Fold Validaiton
 n_iter = 50     # Trying 50 different combinations (Higher = better, but slower)
 
@@ -116,7 +116,7 @@ print(f"Validation Score (Truth): {cv_scores.mean():.4f} ({(cv_scores.mean()*100
 # Saving the Model using joblib
 model_filename = "best_corn_xgboost.pkl"
 joblib.dump(best_model, model_filename)
-print(f"\n Saved best model to '{model_filename}' (using joblib)")
+print(f"\nSaved best model to '{model_filename}' (using joblib)")
 
 # Feature Importance Check
 importance = pd.DataFrame({
