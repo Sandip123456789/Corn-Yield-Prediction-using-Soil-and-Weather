@@ -2,7 +2,7 @@ Corn Yield Prediction System using Soil and Weather
 
 A "Gray Box" Machine Learning system that predicts corn yield efficiency based on soil physics and weather patterns, optimized for biological plausibility over raw statistical accuracy.
 
-OVERVIEW:
+## OVERVIEW:
 
 This project addresses a common failure mode in agricultural ML: Spatial Overfitting. Standard models often memorize the "temperature signature" of specific high-yield districts rather than learning the agronomic drivers of growth.
 
@@ -14,7 +14,7 @@ Key Achievements:
 3. Physics-Aware Tuning: Optimized XGBoost with colsample_bytree: 0.7 to prevent the model from relying solely on temperature as a location proxy.
 4. Discovery: The model independently discovered the "Heat Cliff" (yield crash > 30.5°C) and the "Water Buffer" effect.
 
-PROJECT PIPELINE:
+## PROJECT PIPELINE:
 
 The project is structured into 5 distinct phases, mimicking a professional Data Science lifecycle.
 
@@ -25,7 +25,7 @@ The project is structured into 5 distinct phases, mimicking a professional Data 
       4. Analysis, 04_shap_analysis.py, Interpretability (Black Box Opening), SHAP Beeswarm: Visualized the impact of Soil Texture and Heat Stress.
       5. Deployment, 05_deployment_app.py, Production Interface, "Streamlit: Interactive DSS with ""AI Insights"" wrapper logic."
 
-MODEL PERFORMANCE: ACCURACY vs. REALITY
+## MODEL PERFORMANCE: ACCURACY vs. REALITY
 
 We compared two architectures. The "Statistical Winner" was rejected in favor of the "Scientific Winner."
 
@@ -49,7 +49,7 @@ We compared two architectures. The "Statistical Winner" was rejected in favor of
 
       Reason: Feature Importance is balanced (Max_Temp 28%, Rain 19%, Soil 15%). It successfully captures non-linear biological constraints (Diminishing returns of rainfall). It is robust to location changes.
 
-INSIGHTS:
+## INSIGHTS:
 
 The final deployed model understands three critical agronomic rules without being explicitly programmed:
 
@@ -61,35 +61,63 @@ The final deployed model understands three critical agronomic rules without bein
 
 (These insights were verified via SHAP Dependence Plots in Phase 4).
 
-HOW TO RUN
+## HOW TO RUN
 
-Prerequisites:
+Follow these steps to reproduce the project locally.
 
-  Bash
+### 1. Prerequisites
+Ensure you have ***Python 3.8+*** installed.
 
-      pip install pandas numpy scikit-learn xgboost shap joblib streamlit matplotlib seaborn openpyxl
+### 2. Installation
+It is recommended to use a virtual environment to avoid conflicts.
 
-Steps
-1. Clean the Data:
+          ```bash
+          # Clone the repository
+          git clone [https://github.com/Sandip123456789/Corn-Yield-Prediction-using-Soil-and-Weather.git](https://github.com/Sandip123456789/Corn-Yield-Prediction-using-Soil-and-Weather.git)
+          cd Corn-Yield-Prediction-using-Soil-and-Weather
+
+          # Create a virtual environment
+          python -m venv venv
+
+          # Activate environment
+          # On Windows:
+          venv\Scripts\activate
+          # On Mac/Linux:
+          source venv/bin/activate
+
+          # Install dependencies using the provided file
+          pip install -r requirements.txt
+
+### 3. Data Setup
+   
+- Download the dataset from [Mendeley Data](https://data.mendeley.com/datasets/dkv6b3xj99/1).
+- Rename the file to raw_corn_data.xlsx (if necessary) and place it inside data folder.
+
+### 4. Execution Pipeline
+Run the scripts in this specific order:
+
+#### A. Clean the Data:
    Bash
    
         python 01_data_engineering.py
 
-   (Output: processed_corn_data.csv - approx 1830 clean rows)
+   (Output: cleaned_data/processed_corn_data.csv - approx 1830 clean rows)
 
-2. Train the Brain:
+#### B. Train the Model:
    Bash
 
         python 03_xgboost_tuning.py
 
-    (Output: best_corn_xgboost.pkl - The serialized model object)
+   (Output: best_corn_xgboost.pkl - Trains the XGBoost model)
 
-3. Launch the App:
+#### C. Launch Dashboard:
    Bash
 
         streamlit run 05_deployment_app.py
 
-KNOWN CHALLENGES & RESOLUTIONS
+   (Output: Opens the interactive web app in your browser.)
+
+## KNOWN CHALLENGES & RESOLUTIONS
 
         Outlier (-2477): SHAP analysis revealed a row with Max_Temp = -2477. Fixed by implementing a "Nuclear Filter" in 00_corn_yield_de.py.
 
@@ -97,7 +125,7 @@ KNOWN CHALLENGES & RESOLUTIONS
 
         Streamlit Context Warning: ScriptRunContext errors suppressed via warnings.filterwarnings("ignore") for clean UX.
 
-LICENSE
+## LICENSE
 
 This project is for educational and research purposes. Data provided by Mendeley Data.
 
